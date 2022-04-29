@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DelegadosYEventos;
+using System.Timers;
 
 
 namespace MuestraEventos
@@ -17,14 +18,16 @@ namespace MuestraEventos
 
             Persona.actualizacionNombreCompletado actualizarNombreDelegate = new Persona.actualizacionNombreCompletado(persona.ModificarNombre);
 
-            persona.NombreModificado += Logger.NombreModificadoHandler;
+            persona.NombreModificado += NombreModificadoHandler;
 
-            persona.NombreModificado += Logger.CalculoLetras;
+            persona.NombreModificado += CalculoLetras;
 
-            actualizarNombreDelegate("Lucas");*/
+            actualizarNombreDelegate("Lucas"); 
+            */
+
             #endregion
             #region Ejercicio2
-            Console.WriteLine(" Retirar: R // Depostiar: D");
+            /*Console.WriteLine(" Retirar: R // Depostiar: D");
             string accion = Console.ReadLine();
 
             CajaAhorro cajaAhorro = new CajaAhorro();
@@ -33,35 +36,47 @@ namespace MuestraEventos
                                         new CajaAhorro.modificarSaldo(cajaAhorro.RetirarSaldo) : 
                                         new CajaAhorro.modificarSaldo(cajaAhorro.DepositarSaldo);
 
-            cajaAhorro.Caja += CajaDelegado.ModiciarSaldoHandler;
+            cajaAhorro.Caja += ModiciarSaldoHandler;
 
             modificarSaldo(4000);
+            
+            */
+            #endregion
+            #region Ejercicio3
+
+            Timer timer = new Timer(1000);
+
+            Console.WriteLine("Presiona una tecla para parar la ejecucion");
+
+            timer.Elapsed += TimerHandler;
+
+            timer.Enabled = true;
+
             #endregion
 
             Console.ReadKey();
         }
-    }
 
-    public static class Logger
-    {
-        public static void NombreModificadoHandler(object sender, NombreModificado args)
+        public static void NombreModificadoHandler(object sender, NombreModificado a)
         {
-            Console.WriteLine($" El nombre fue modificado de {args.NombreViejo} a {args.NombreNuevo}");
+            Console.WriteLine($" El nombre fue modificado de {a.NombreViejo} a {a.NombreNuevo}");
         }
 
-        public static void CalculoLetras(object sender, NombreModificado args)
+        public static void CalculoLetras(object sender, NombreModificado a)
         {
-            int diferenciasLetras = Math.Abs(args.NombreViejo.Count() - args.NombreNuevo.Count());
+            int diferenciasLetras = Math.Abs(a.NombreViejo.Count() - a.NombreNuevo.Count());
 
             Console.WriteLine($" La diferencia de letras es de {diferenciasLetras}");
         }
-    }
 
-    public static class CajaDelegado
-    {
-        public static void ModiciarSaldoHandler(object sender, ModificacionSaldo args)
+        public static void ModiciarSaldoHandler(object sender, ModificacionSaldo a)
         {
-            Console.WriteLine($" Nombre: {args.Nombre}, Saldo: {args.Saldo}, Accion: {args.AccionRealizada}");
+            Console.WriteLine($" Nombre: {a.Nombre}, Saldo: {a.Saldo}, Accion: {a.AccionRealizada}");
+        }
+
+        public static void TimerHandler(object o, ElapsedEventArgs a)
+        {
+            Console.WriteLine(a.SignalTime);
         }
     }
 }
