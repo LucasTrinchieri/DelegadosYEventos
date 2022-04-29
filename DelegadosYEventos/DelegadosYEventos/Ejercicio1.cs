@@ -10,9 +10,9 @@ namespace DelegadosYEventos
     {
         public EventHandler<NombreModificado> NombreModificado;
 
-        public delegate void actualizacionNombreCompletado(string nombre);
+        public delegate string actualizacionNombreCompletado(string nombre);
 
-        private string Nombre { get; set; }
+        private string Nombre = "NombreViejo";
 
         public string ModificarNombre(string nombre)
         {
@@ -22,8 +22,8 @@ namespace DelegadosYEventos
 
             this.NombreModificado(this, new NombreModificado()
             {
-                NombreNuevo = nombre,
-                NombreViejo = NombreViejo
+                NombreViejo = NombreViejo,
+                NombreNuevo = nombre
             });
 
             return Nombre;
